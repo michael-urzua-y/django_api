@@ -1,0 +1,49 @@
+# Entorno virtual
+venv/
+.env
+*.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos de base de datos
+*.sqlite3
+*.db
+
+# Archivos de migraciones
+**/migrations/
+**/migrations/*.pyc
+**/migrations/*.py
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos de pruebas
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Archivos de compilación
+build/
+dist/
+*.egg-info/
+
+# Archivos de media y estáticos generados
+media/
+staticfiles/
+
+# Archivos de Docker
+*.pid
+
+# Archivos de configuración local
+local_settings.py
