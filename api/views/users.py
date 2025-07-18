@@ -1,53 +1,63 @@
-# from rest_framework import viewsets
-# from .models import Task, User
-# from .serializers import TaskSerializer, UserSerializer
-
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
-
-# Lista simulada de usuarios
-users = [
-    {"id": 1, "nombre": "Juan", "email": "juan@example.com"},
-    {"id": 2, "nombre": "Ana", "email": "ana@example.com"},
-    {"id": 3, "nombre": "Luis", "email": "luis@example.com"},
-]
+from api.models import User
+from api.serializers import UserSerializer
 
 class UserViewSet(viewsets.ViewSet):
 
+    
     def list(self, request):
-        return Response(users)
+        print("LLEGUE")
+        users = User.objects.all()  # ORM: obtiene todos los usuarios de la base de datos
+        serializer = UserSerializer(users, many=True)  # Serializa la lista de usuarios
+        return Response(serializer.data)  # Devuelve los datos en formato JSON
 
-    # GET
-    def retrieve(self, request, pk=None):  # 👈 nombre correcto
-        user = next((u for u in users if u["id"] == int(pk)), None)
-        if user:
-            return Response(user)
-        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-    # POST
+
+    def retrieve(self, request, pk=None):
+        try:
+            user = User.objects.get(pk=pk)  # ORM: busca un usuario por su clave primaria
+            serializer = UserSerializer(user)  # Serializa el objeto usuario
+            return Response(serializer.data)  # Devuelve los datos en formato JSON
+        except User.DoesNotExist:
+            return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
     def create(self, request):
-        new_user = request.data
-        new_user["id"] = max(u["id"] for u in users) + 1 if users else 1
-        users.append(new_user)
-        return Response(new_user, status=status.HTTP_201_CREATED)
+        serializer = UserSerializer(data=request.data)  # Crea el serializador con los datos recibidos
+        if serializer.is_valid():  # Valida los datos
+            serializer.save()  # ORM: crea un nuevo registro en la base de datos
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # PUT
+
     def update(self, request, pk=None):
-        user = next((u for u in users if u["id"] == int(pk)), None)
-        if user:
-            user.update(request.data)
-            return Response(user)
-        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            # Consulta ORM para obtener el usuario por su clave primaria
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            # Si no se encuentra, se devuelve un error 404
+            return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-    # DELETE
-    def destroy(self, request, pk=None): 
-        global users
-        users = [u for u in users if u["id"] != int(pk)]
-        return Response({"message": "Usuario eliminado"})
+        # Se instancia el serializador con el objeto existente y los nuevos datos
+        serializer = UserSerializer(user, data=request.data)
+
+        # Validación de los datos
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Guardado de los datos actualizados en la base de datos (ORM en acción)
+        serializer.save()
+
+        # Respuesta con los datos actualizados
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def destroy(self, request, pk=None):
+        try:
+            user = User.objects.get(pk=pk)  # ORM: busca el usuario por su clave primaria
+            user.delete()  # ORM: elimina el objeto de la base de datos (DELETE)
+            return Response({"message": "Usuario eliminado"})  # Respuesta exitosa
+        except User.DoesNotExist:
+            return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+

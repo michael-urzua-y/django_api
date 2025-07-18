@@ -17,9 +17,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -27,6 +30,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+
 ]
 
 ROOT_URLCONF = 'myapi.urls'
@@ -49,24 +54,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myapi.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql', 
-#         'NAME': 'nombre_de_tu_base',              
-#         'USER': 'tu_usuario',
-#         'PASSWORD': 'tu_contraseña',
-#         'HOST': 'localhost',                       
-#         'PORT': '5432',                            
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': 'django_api_test',              
+        'USER': 'michael',
+        'PASSWORD': '',
+        'HOST': 'localhost',                       
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=api'
+        }
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = []
@@ -80,3 +89,6 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
+
