@@ -9,31 +9,55 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # Apps de Django que deben ir primero
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.sessions',      # ✅ Necesaria si usas AuthenticationMiddleware
     'django.contrib.staticfiles',
-    'rest_framework',
+    # 'django.contrib.messages',    # Solo si usas el sistema de mensajes
+    # 'django.contrib.admin',       # Solo si usas el admin de Django
+
+    # Apps de terceros
+    'corsheaders',                  # Middleware CORS
+    'rest_framework',              # Django REST Framework (si lo usas)
+    'drf_yasg',                     # Swagger
+
+    # Tus apps locales
     'api',
-    'corsheaders',
-
 ]
 
+
+
+
+# 🧱 Middleware: funciones que se ejecutan en cada request/response
 MIDDLEWARE = [
+    # 🔄 Permite peticiones desde otros orígenes (útil para frontend separado)
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
 
+    # 🔐 Seguridad básica (HTTPS, headers seguros, etc.)
+    'django.middleware.security.SecurityMiddleware',
+
+    # ⚠️ Manejo de sesiones (puedes quitarlo si no usas sesiones o cookies)
+    'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # 🔁 Middleware común (manejo de cabeceras, redirecciones, etc.)
+    'django.middleware.common.CommonMiddleware',
+
+    # ⚠️ Protección contra CSRF (puedes quitarlo si usas solo APIs sin cookies)
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+
+    # 🔐 Autenticación de usuarios (necesario si usas `request.user`)
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # ⚠️ Sistema de mensajes (puedes quitarlo si no usas `messages`)
+    # 'django.contrib.messages.middleware.MessageMiddleware',
+
+    # 🛡️ Prevención de ataques por iframes
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+# 🌐 Archivo principal de rutas
 ROOT_URLCONF = 'myapi.urls'
 
 TEMPLATES = [
@@ -52,6 +76,8 @@ TEMPLATES = [
     },
 ]
 
+
+# 🚀 Configuración WSGI (para producción con Gunicorn, etc.)
 WSGI_APPLICATION = 'myapi.wsgi.application'
 
 DATABASES = {
@@ -78,17 +104,22 @@ DATABASES = {
 # }
 
 
+
+
+# 🔐 Validadores de contraseña (vacío para desarrollo)
 AUTH_PASSWORD_VALIDATORS = []
 
+# 🌍 Configuración regional
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-STATIC_URL = 'static/'
+# 📦 Archivos estáticos (necesario para documentación Swagger o Ninja)
+STATIC_URL = '/static/'
 
-CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
+# 🌐 Permitir peticiones desde cualquier origen (solo para desarrollo)
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 
