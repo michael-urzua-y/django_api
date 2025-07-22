@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status  # Importa herramientas para crear vistas y manejar estados HTTP
 from rest_framework.response import Response  # Permite enviar respuestas HTTP
 from api.models import Product  # Importa el modelo Product (ORM)
-from api.serializers import ProductSerializer  # Importa el serializador para convertir entre objetos y JSON
+from api.serializers.product_serializers import ProductSerializer  # Importa el serializador para convertir entre objetos y JSON
 
 class ProductViewSet(viewsets.ViewSet):
     """

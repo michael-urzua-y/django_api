@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 # 🧱 Middleware: funciones que se ejecutan en cada request/response
 MIDDLEWARE = [
     # 🔄 Permite peticiones desde otros orígenes (útil para frontend separado)
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
 
     # 🔐 Seguridad básica (HTTPS, headers seguros, etc.)
     'django.middleware.security.SecurityMiddleware',
