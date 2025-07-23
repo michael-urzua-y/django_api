@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from api.models import User
-from api.serializers.user_serializers import UserSerializer
+from apps.users.domain.models import User
+from apps.users.presentation.serializers import UserSerializer
+
 
 class UserViewSet(viewsets.ViewSet):
 

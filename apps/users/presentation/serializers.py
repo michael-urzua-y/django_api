@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import User
+from apps.users.domain.models import User
 
 class DireccionSerializer(serializers.Serializer):
     calle = serializers.CharField()

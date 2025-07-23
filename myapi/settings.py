@@ -9,22 +9,23 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    # Apps de Django que deben ir primero
+    # Apps de Django
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',      # ✅ Necesaria si usas AuthenticationMiddleware
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
-    # 'django.contrib.messages',    # Solo si usas el sistema de mensajes
-    # 'django.contrib.admin',       # Solo si usas el admin de Django
 
     # Apps de terceros
-    'corsheaders',                  # Middleware CORS
-    'rest_framework',              # Django REST Framework (si lo usas)
-    'drf_yasg',                     # Swagger
+    'corsheaders',
+    'rest_framework',
+    'drf_yasg',
 
     # Tus apps locales
     'api',
+    'apps.users',
+    'apps.products',
 ]
+
 
 
 
