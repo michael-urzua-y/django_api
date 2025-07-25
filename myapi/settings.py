@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'api',
     'apps.users',
     'apps.products',
+    'apps.payments',
+
 ]
 
 
@@ -56,7 +58,6 @@ MIDDLEWARE = [
     # 🛡️ Prevención de ataques por iframes
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 # 🌐 Archivo principal de rutas
 ROOT_URLCONF = 'myapi.urls'
@@ -94,18 +95,6 @@ DATABASES = {
         }
     }
 }
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-
 
 # 🔐 Validadores de contraseña (vacío para desarrollo)
 AUTH_PASSWORD_VALIDATORS = []
