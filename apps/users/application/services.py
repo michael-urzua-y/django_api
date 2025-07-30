@@ -4,7 +4,8 @@ from apps.users.domain.user_model import User
 
 class UserService:
     
-    # ""Domain Service - Contiene las reglas de negocio"""
+    # manejar la lógica de negocio.
+    #Esta función se comunica con la capa de persistencia
     
     def __init__(self, schema_indicator: str = 'default'):
         self.repository = UserRepository(schema_indicator)

@@ -1,19 +1,19 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from apps.payments.application.services import get_payment_report
+from apps.payments.application.services import PaymentService
+from apps.payments.presentation.serializers import PayinViewSerializer, PayoutViewSerializer
 
-class PaymentReportView(APIView):
-    def post(self, request):
-        esquema = request.data.get("esquema_bd")
-        metodo = request.data.get("metodo")
+class PayinViewList(APIView):
+    def get(self, request):
+        service = PaymentService()
+        queryset = service.list_payins()
+        serializer = PayinViewSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-        if not esquema or not metodo:
-            return Response({"error": "esquema_bd y metodo son requeridos"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            # Pasar todo el request.data al service
-            data = get_payment_report(request.data)
-            return Response(data, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class PayoutViewList(APIView):
+    def get(self, request):
+        service = PaymentService()
+        queryset = service.list_payouts()
+        serializer = PayoutViewSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

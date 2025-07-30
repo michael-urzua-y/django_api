@@ -1,7 +1,14 @@
-from rest_framework import serializers
-from apps.products.domain.models import Product
 
-class ProductSerializer(serializers.ModelSerializer):
+from rest_framework import serializers
+from apps.payments.domain.payin_view_model import PayinView
+from apps.payments.domain.payout_view_model import PayoutView
+
+class PayinViewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = PayinView
+        fields = '__all__'
+
+class PayoutViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PayoutView
         fields = '__all__'

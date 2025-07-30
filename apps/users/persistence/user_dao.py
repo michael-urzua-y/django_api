@@ -1,3 +1,8 @@
+# Este archivo define el Data Access Object (DAO) para el modelo User.
+# Contiene métodos estáticos que interactúan directamente con la base de datos usando el ORM de Django.
+# No maneja lógica de negocio ni configuración de esquemas, solo operaciones CRUD básicas.
+
+
 from typing import List, Optional
 from apps.users.domain.user_model import User
 

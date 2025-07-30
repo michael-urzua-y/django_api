@@ -29,3 +29,6 @@ class Payin(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     deleted_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        db_table = 'payin'

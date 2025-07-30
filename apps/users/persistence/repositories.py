@@ -1,3 +1,8 @@
+# Este archivo define el repositorio para el modelo User.
+# Encapsula el DAO y agrega lógica para configurar dinámicamente el esquema de base de datos antes de cada operación.
+# Sirve como puente entre la capa de aplicación y la persistencia, facilitando el acceso desacoplado a los datos.
+
+
 from typing import List, Optional
 from django.db import connection
 from apps.users.persistence.user_dao import UserDAO

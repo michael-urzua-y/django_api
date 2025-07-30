@@ -1,4 +1,5 @@
-# myapi/middleware/schema_middleware.py
+#Este middleware intercepta la petición y extrae el parámetro schema de la URL. 
+#Luego, usa esquemas.py para mapearlo al esquema real de la base de datos y lo guarda en el contexto de la petición.
 
 from django.db import connection
 from django.utils.deprecation import MiddlewareMixin

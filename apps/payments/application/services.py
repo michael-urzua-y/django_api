@@ -1,19 +1,12 @@
-from apps.payments.persistence import repositories
+from apps.payments.persistence.repositories import PayinViewRepository, PayoutViewRepository
 
-def get_payment_report(payload: dict):
-    metodo = payload.get("metodo")
+class PaymentService:
+    def __init__(self):
+        self.payin_repo = PayinViewRepository()
+        self.payout_repo = PayoutViewRepository()
 
-    if metodo not in REPOSITORY_DISPATCHER:
-        raise ValueError(f"Método '{metodo}' no soportado.")
+    def list_payins(self):
+        return self.payin_repo.get_all()
 
-    query_func = REPOSITORY_DISPATCHER[metodo]
-
-    # Ejecuta la función ORM y retorna los resultados como lista de diccionarios
-    results = query_func(payload)
-    return results
-
-# Diccionario de funciones para cada método
-REPOSITORY_DISPATCHER = {
-    "payin": repositories.get_payin_query,
-    "payout": repositories.get_payout_query,
-}
+    def list_payouts(self):
+        return self.payout_repo.get_all()
