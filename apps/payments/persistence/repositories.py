@@ -1,12 +1,5 @@
 from psycopg2 import sql
 
-# inbd 
-# metodo cone bd
-
-# meoto listado de esqumas  = comercio entrante del json
-
-
-
 def get_payin_query(payload: dict):
     schema_name = payload["esquema_bd"]
     return sql.SQL("""

@@ -1,41 +1,38 @@
 from rest_framework import serializers
-from apps.users.domain.models import User
+from apps.users.domain.user_model import User
+from apps.users.domain.commerce_model import Commerce
 
-class DireccionSerializer(serializers.Serializer):
-    calle = serializers.CharField()
-    comuna = serializers.CharField()
-    pais = serializers.CharField()
+class CommerceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Commerce
+        fields = [
+            'commerce_id',
+            'name',
+            'document',
+            'document_format',
+            'iso_code',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        ]
+
 
 class UserSerializer(serializers.ModelSerializer):
-    direccion = DireccionSerializer(write_only=True)
-    salida_direccion = serializers.SerializerMethodField(read_only=True)
-
     class Meta:
         model = User
-        fields = ['id', 'nombre', 'email', 'direccion', 'salida_direccion']
+        fields = [
+            'user_id',
+            'commerce_id', 
+            'name',
+            'email',
+            'password',
+            'ip',
+            'role',
+            'permissions',
+            'position',
+            'is_active',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        ]
 
-    def get_salida_direccion(self, obj):
-        return {
-            "calle": obj.direccion,
-            "comuna": obj.comuna,
-            "pais": obj.pais
-        }
-
-    def create(self, validated_data):
-        direccion_data = validated_data.pop('direccion')
-        validated_data['direccion'] = direccion_data['calle']
-        validated_data['comuna'] = direccion_data['comuna']
-        validated_data['pais'] = direccion_data['pais']
-        return User.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        direccion_data = validated_data.pop('direccion', None)
-        if direccion_data:
-            instance.direccion = direccion_data.get('calle', instance.direccion)
-            instance.comuna = direccion_data.get('comuna', instance.comuna)
-            instance.pais = direccion_data.get('pais', instance.pais)
-
-        instance.nombre = validated_data.get('nombre', instance.nombre)
-        instance.email = validated_data.get('email', instance.email)
-        instance.save()
-        return instance

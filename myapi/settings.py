@@ -1,10 +1,11 @@
 from pathlib import Path
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-secret-key'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -45,6 +46,7 @@ MIDDLEWARE = [
 
     # 🔁 Middleware común (manejo de cabeceras, redirecciones, etc.)
     'django.middleware.common.CommonMiddleware',
+    'myapi.middleware.schema_middleware.SchemaMiddleware',
 
     # ⚠️ Protección contra CSRF (puedes quitarlo si usas solo APIs sin cookies)
     # 'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,19 +84,37 @@ TEMPLATES = [
 # 🚀 Configuración WSGI (para producción con Gunicorn, etc.)
 WSGI_APPLICATION = 'myapi.wsgi.application'
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', 
-        'NAME': 'django_api_test',              
-        'USER': 'michael',
-        'PASSWORD': '',
-        'HOST': 'localhost',                       
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
         'OPTIONS': {
-            'options': '-c search_path=api'
+            'options': f"-c search_path={config('DB_SCHEMA', default='public')}"
         }
     }
 }
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+
 
 # 🔐 Validadores de contraseña (vacío para desarrollo)
 AUTH_PASSWORD_VALIDATORS = []
